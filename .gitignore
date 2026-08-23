@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+build/
+.output/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.production
+*.pem
+
+# IDE / System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
