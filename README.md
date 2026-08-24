@@ -10,10 +10,6 @@ https://health-appointment-system-t93i.onrender.com
 
 https://health-appointment-backend-a204.onrender.com
 
-# SYSTEM DESIGN DOCUMENT
-
-https://drive.google.com/file/d/1F6b_ju6bZRcMrImfT_s94RhQoROvq1rw/view?usp=sharing
-
 ---
 
 ## Key Features
@@ -134,21 +130,429 @@ The application follows a layered full-stack architecture:
               ┌─────────────────────┼─────────────────────┐
               │                     │                     │
        ┌──────▼──────┐      ┌──────▼──────┐      ┌──────▼──────┐
-       │ Authentication│     │ Appointment │      │ Role-Based  │
-       │    Routes     │     │   Routes    │      │   Routes    │
-       └──────────────┘      └──────┬──────┘      └─────────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │     Services        │
-                         │ Booking / Slots /   │
-                         │ Notifications / AI  │
-                         └──────────┬──────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │    SQLAlchemy ORM   │
-                         └──────────┬──────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │      Database       │
-                         │ PostgreSQL / SQLite │
-                         └─────────────────────┘
+       │Authentication│     │ Appointment │      │ Role-Based  │
+       │    Routes    │     │   Routes    │      │   Routes    │
+       └─────────────┘      └──────┬──────┘      └─────────────┘
+                                   │
+                         ┌─────────▼─────────┐
+                         │     Services      │
+                         │ Booking / Slots / │
+                         │ Notifications / AI│
+                         └─────────┬─────────┘
+                                   │
+                         ┌─────────▼─────────┐
+                         │   SQLAlchemy ORM  │
+                         └─────────┬─────────┘
+                                   │
+                         ┌─────────▼─────────┐
+                         │     Database      │
+                         │ PostgreSQL / SQLite│
+                         └───────────────────┘
+```
+
+---
+
+## Appointment Methodology
+
+```text
+Patient
+   │
+   ▼
+Register / Login
+   │
+   ▼
+Select Healthcare Category
+   │
+   ▼
+Map Category to Specialization
+   │
+   ▼
+Select Doctor
+   │
+   ▼
+Fetch Available Slots
+   │
+   ▼
+Select Date & Time
+   │
+   ▼
+Check Slot Availability
+   │
+   ├── Unavailable ──────► Select Another Slot
+   │
+   ▼
+Check Doctor Leave / Conflicts
+   │
+   ├── Conflict ─────────► Reject Booking
+   │
+   ▼
+Hold Slot for 5 Minutes
+   │
+   ├── Hold Expires ─────► Release Slot
+   │
+   ▼
+Confirm Appointment
+   │
+   ▼
+Generate Pre-Visit Summary
+   │
+   ▼
+Notify Patient / Doctor
+   │
+   ▼
+Doctor Views Appointment
+   │
+   ▼
+Consultation
+   │
+   ▼
+Diagnosis & Clinical Notes
+   │
+   ▼
+Prescription
+   │
+   ▼
+Patient Views Appointment & Prescription
+```
+
+---
+
+## Project Structure
+
+```text
+Health-appointment-system/
+│
+├── backend/
+│   ├── app.py                 # Flask application factory and database seeding
+│   ├── config.py              # Environment configuration
+│   ├── extensions.py          # SQLAlchemy, JWT, CORS and migration extensions
+│   ├── requirements.txt       # Backend dependencies
+│   │
+│   ├── models/                # Database models
+│   ├── routes/                # REST API routes
+│   ├── services/              # Business logic and integrations
+│   ├── tasks/                 # APScheduler background tasks
+│   └── tests/                 # Backend tests
+│
+├── frontend/
+│   ├── package.json           # Frontend dependencies
+│   ├── vite.config.js         # Vite configuration
+│   ├── index.html
+│   │
+│   └── src/
+│       ├── components/        # Reusable UI components
+│       ├── layouts/           # Patient, Doctor and Admin layouts
+│       ├── pages/             # Application pages
+│       ├── services/          # API service layer
+│       └── context/           # Authentication context
+│
+├── README.md
+└── .env.example
+```
+
+---
+
+## Local Development Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/tanishqkumargupta/Health-appointment-system.git
+cd Health-appointment-system
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
+python -m venv .venv
+```
+
+Activate the environment on Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+On macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend:
+
+```bash
+python app.py
+```
+
+Backend runs on:
+
+```text
+http://localhost:5000
+```
+
+### 3. Default Seed Credentials
+
+#### Admin
+
+```text
+Email: admin@healthapp.com
+Password: admin123
+```
+
+#### Doctor - Dermatology
+
+```text
+Email: dr.sharma@healthapp.com
+Password: doctor123
+```
+
+#### Doctor - Cardiology
+
+```text
+Email: dr.patel@healthapp.com
+Password: doctor123
+```
+
+#### Demo Patient
+
+```text
+Email: patient@example.com
+Password: patient123
+```
+
+These credentials are intended for local/demo use and should be replaced with secure credentials for production.
+
+### 4. Frontend Setup
+
+Open another terminal:
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Frontend runs on:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Production Deployment
+
+### Deploy Backend to Render
+
+1. Connect the GitHub repository to Render.
+2. Create a new **Web Service**.
+3. Configure the backend root directory according to the repository structure.
+4. Set the build command:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+5. Set the start command:
+
+```bash
+gunicorn "backend.app:create_app()"
+```
+
+6. Configure the required environment variables:
+
+```env
+DATABASE_URL=your_postgresql_database_url
+JWT_SECRET_KEY=your_secret_key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+7. Deploy the backend.
+
+### Deploy Frontend
+
+1. Connect the GitHub repository to Render.
+2. Set the root directory to:
+
+```text
+frontend
+```
+
+3. Set the build command:
+
+```bash
+npm install && npm run build
+```
+
+4. Set the output directory:
+
+```text
+dist
+```
+
+5. Configure the frontend environment variable:
+
+```env
+VITE_API_URL=https://health-appointment-backend-a204.onrender.com/api
+```
+
+6. Deploy the frontend.
+
+---
+
+## Environment Variables
+
+### Backend
+
+```env
+DATABASE_URL=your_database_url
+JWT_SECRET_KEY=your_jwt_secret
+OPENAI_API_KEY=your_openai_api_key
+```
+
+Additional variables may be required for Google Calendar and other configured services.
+
+### Frontend
+
+For local development:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+For production:
+
+```env
+VITE_API_URL=https://health-appointment-backend-a204.onrender.com/api
+```
+
+**Never commit real API keys, database credentials, JWT secrets, or other sensitive configuration values to GitHub.**
+
+---
+
+## API Structure
+
+### Authentication
+
+```text
+/api/auth/*
+```
+
+Handles registration and login.
+
+### Patient
+
+```text
+/api/patient/*
+```
+
+Handles patient profiles, prescriptions, appointments, and patient-specific operations.
+
+### Doctor
+
+```text
+/api/doctor/*
+```
+
+Handles doctor appointments, consultations, prescriptions, schedules, and leave requests.
+
+### Admin
+
+```text
+/api/admin/*
+```
+
+Handles doctor management, leave approvals, schedule requests, and administrative operations.
+
+### Appointments
+
+```text
+/api/appointments/*
+```
+
+Handles slot availability, appointment holds, confirmation, cancellation, and appointment operations.
+
+### Health Check
+
+```text
+GET /api/health
+```
+
+Returns:
+
+```json
+{
+  "status": "healthy",
+  "service": "Health Appointment API"
+}
+```
+
+---
+
+## Security
+
+The application uses:
+
+- JWT-based authentication
+- Password hashing
+- Role-based access control
+- Protected API endpoints
+- CORS configuration
+- Environment variables for sensitive configuration
+- Appointment ownership validation
+- Doctor-assignment validation
+- Consultation completion validation
+- Appointment conflict validation
+
+Sensitive credentials should never be committed to the repository.
+
+---
+
+## Deployment
+
+### Frontend
+
+https://health-appointment-system-t93i.onrender.com
+
+### Backend
+
+https://health-appointment-backend-a204.onrender.com
+
+### GitHub Repository
+
+https://github.com/tanishqkumargupta/Health-appointment-system
+
+---
+
+## Author
+
+**Tanishq Kumar Gupta**
+
+GitHub: https://github.com/tanishqkumargupta
+
+Repository: https://github.com/tanishqkumargupta/Health-appointment-system
+
+---
+
+## License
+
+This project is developed for educational and demonstration purposes.
