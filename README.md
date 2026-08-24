@@ -2,7 +2,7 @@
 
 A dynamic, production-ready healthcare appointment management platform supporting Patients, Doctors, and System Administrators. Built with Flask, SQLAlchemy, JWT Authentication, React, Vite, and OpenAI LLM integration.
 
-## 🚀 Key Features
+##  Key Features
 
 ### 1. Patient Portal
 - **Public Signup & Auth**: Secure registration & login (`role = PATIENT`).
@@ -37,7 +37,7 @@ A dynamic, production-ready healthcare appointment management platform supportin
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - **Frontend**: React, Vite, JavaScript, React Router, Custom CSS Design System
 - **Backend**: Python 3.11, Flask, REST API, SQLAlchemy ORM, Flask-JWT-Extended, bcrypt
@@ -46,7 +46,7 @@ A dynamic, production-ready healthcare appointment management platform supportin
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Health appointment system/
