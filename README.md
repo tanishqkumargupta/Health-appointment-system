@@ -2,8 +2,10 @@
 
 A dynamic, production-ready healthcare appointment management platform supporting Patients, Doctors, and System Administrators. Built with Flask, SQLAlchemy, JWT Authentication, React, Vite, and OpenAI LLM integration.
 
-WEBSITE DEPLOYED URL -- https://health-appointment-system-kappa.vercel.app/login
-SYSTEM DESIGN DOCUMENT -- https://drive.google.com/file/d/1F6b_ju6bZRcMrImfT_s94RhQoROvq1rw/view?usp=sharing
+# WEBSITE DEPLOYED URL -- https://health-appointment-system-kappa.vercel.app/login
+
+
+# SYSTEM DESIGN DOCUMENT -- https://drive.google.com/file/d/1F6b_ju6bZRcMrImfT_s94RhQoROvq1rw/view?usp=sharing
 
 
 
