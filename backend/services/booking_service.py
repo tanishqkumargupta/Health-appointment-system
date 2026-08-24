@@ -178,6 +178,8 @@ def cancel_appointment(appointment_id, user_id, user_role):
     if not appointment:
         raise ValueError("Appointment not found.")
 
+    user_id = int(user_id)
+
     if user_role == 'PATIENT' and appointment.patient_id != user_id:
         raise ValueError("Unauthorized to cancel this appointment.")
     elif user_role == 'DOCTOR' and appointment.doctor.user_id != user_id:

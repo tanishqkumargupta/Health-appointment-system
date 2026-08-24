@@ -47,7 +47,13 @@ class Prescription(db.Model):
             "consultation_id": self.consultation_id,
             "appointment_id": self.appointment_id,
             "doctor_id": self.doctor_id,
-            "doctor_name": self.doctor.user.name if self.doctor and self.doctor.user else None,
+            "doctor_name": (
+                self.consultation.appointment.doctor.user.name
+                if self.consultation and self.consultation.appointment
+                and self.consultation.appointment.doctor
+                and self.consultation.appointment.doctor.user
+                else None,
+            ),
             "patient_id": self.patient_id,
             "patient_name": self.patient.name if self.patient else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,

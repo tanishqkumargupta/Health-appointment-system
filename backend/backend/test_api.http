@@ -1,0 +1,304 @@
+### Health Check
+
+GET http://127.0.0.1:5000/api/health
+
+
+### Patient Signup
+
+POST http://127.0.0.1:5000/api/auth/signup
+Content-Type: application/json
+
+{
+    "name": "Test Patient",
+    "email": "patient@test.com",
+    "phone": "9876543210",
+    "password": "Test123!",
+    "confirm_password": "Test123!"
+}
+
+
+### Patient Login
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "patient@test.com",
+    "password": "Test123!"
+}
+
+
+### Current Patient
+
+GET http://127.0.0.1:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+
+
+### Invalid Login
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "patient@test.com",
+    "password": "wrongpassword"
+}
+
+
+### Duplicate Signup
+
+POST http://127.0.0.1:5000/api/auth/signup
+Content-Type: application/json
+
+{
+    "name": "Test Patient 2",
+    "email": "patient@test.com",
+    "phone": "9999999999",
+    "password": "Test123!",
+    "confirm_password": "Test123!"
+}
+
+
+### Admin Login
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@healthapp.com",
+    "password": "admin123"
+}
+
+
+### Admin Current User
+
+GET http://127.0.0.1:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+
+
+### Doctor Login - Dr. Sharma
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "dr.sharma@healthapp.com",
+    "password": "doctor123"
+}
+
+
+### Doctor Current User
+
+GET http://127.0.0.1:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDMwMywianRpIjoiZWM4ZmFlOWUtNDMzYy00MmZlLTgzNjEtMjQ1MGU0ZGJiN2Q3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3ODc1OTAzMDMsImNzcmYiOiIzYTVhY2NjZC1kNWIwLTRkM2QtODA0MC1iNjlmMWYwNjNiNWEiLCJleHAiOjE3ODc2NzY3MDN9.0jkTqCx9yh6IIHOcHb42XUIHj1AK59vrjjOh0zNfPR4
+
+
+### Doctor Login - Dr. Patel
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "dr.patel@healthapp.com",
+    "password": "doctor123"
+}
+
+### Admin - Get Doctors
+
+GET http://127.0.0.1:5000/api/admin/doctors
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+
+### Admin - Get Specializations
+
+GET http://127.0.0.1:5000/api/admin/specializations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+
+### Admin - Create Doctor
+
+POST http://127.0.0.1:5000/api/admin/doctors
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+Content-Type: application/json
+
+{
+    "name": "Dr. Test",
+    "email": "doctor@test.com",
+    "password": "Doctor123!",
+    "phone": "9876543222",
+    "specialization_id": 2,
+    "start_time": "09:00",
+    "end_time": "17:00",
+    "slot_duration": 30
+}
+
+### Get All Active Doctors
+
+GET http://127.0.0.1:5000/api/appointments/doctors
+
+### Get Problem Categories
+
+GET http://127.0.0.1:5000/api/appointments/categories
+
+### Find Cardiology Doctors
+
+GET http://127.0.0.1:5000/api/appointments/doctors?category=Heart%20%2F%20Chest
+
+### Dr. Sharma Available Slots
+
+GET http://127.0.0.1:5000/api/appointments/doctors/1/slots?date=2026-08-25
+
+### Hold Appointment Slot
+
+POST http://127.0.0.1:5000/api/appointments/hold
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "doctor_id": 1,
+    "start_time": "2026-08-25T10:00:00",
+    "problem_category": "Skin",
+    "symptom_text": "I have had a skin rash for three days."
+}
+
+### Confirm Appointment
+
+POST http://127.0.0.1:5000/api/appointments/confirm
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "appointment_id": 1
+}
+
+### Attempt Duplicate Booking
+
+POST http://127.0.0.1:5000/api/appointments/hold
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "doctor_id": 1,
+    "start_time": "2026-08-25T10:00:00",
+    "problem_category": "Skin",
+    "symptom_text": "Trying to book the same slot again."
+}
+
+### Check Slots After Booking
+
+GET http://127.0.0.1:5000/api/appointments/doctors/1/slots?date=2026-08-25
+
+### Doctor - Request Leave
+
+POST http://127.0.0.1:5000/api/doctor/leave-request
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDMwMywianRpIjoiZWM4ZmFlOWUtNDMzYy00MmZlLTgzNjEtMjQ1MGU0ZGJiN2Q3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3ODc1OTAzMDMsImNzcmYiOiIzYTVhY2NjZC1kNWIwLTRkM2QtODA0MC1iNjlmMWYwNjNiNWEiLCJleHAiOjE3ODc2NzY3MDN9.0jkTqCx9yh6IIHOcHb42XUIHj1AK59vrjjOh0zNfPR4
+Content-Type: application/json
+
+{
+    "leave_date": "2026-08-26",
+    "reason": "Personal leave"
+}
+
+### Admin - Get Leave Requests
+
+GET http://127.0.0.1:5000/api/admin/leave-requests
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+
+### Admin - Approve Leave
+
+POST http://127.0.0.1:5000/api/admin/leave-requests/1/approve
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDI3MCwianRpIjoiMWRhMTFhZGQtMjFhNy00MTRkLThkNDUtODAwMjgzOGRhMjhjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODc1OTAyNzAsImNzcmYiOiJiZTA2MzU3MC01Mzc1LTQwMDgtYmMwYi1iOTNhYmQ1NTA0ZWMiLCJleHAiOjE3ODc2NzY2NzB9.Xqqrp2fP8_b_Ko_Ef8QPXdP9cqkGXCSFldNrpnTwFHk
+### Slots During Doctor Leave
+
+GET http://127.0.0.1:5000/api/appointments/doctors/1/slots?date=2026-08-26
+
+### Attempt Booking During Doctor Leave
+
+POST http://127.0.0.1:5000/api/appointments/hold
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "doctor_id": 1,
+    "start_time": "2026-08-26T10:00:00",
+    "problem_category": "Skin",
+    "symptom_text": "Testing doctor leave conflict."
+}
+
+### Cancel Appointment
+
+POST http://127.0.0.1:5000/api/appointments/1/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+
+### Verify Current Patient
+
+GET http://127.0.0.1:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+
+### Check Slot After Cancellation
+
+GET http://127.0.0.1:5000/api/appointments/doctors/1/slots?date=2026-08-25
+
+### Create Appointment for Consultation Test
+
+POST http://127.0.0.1:5000/api/appointments/hold
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "doctor_id": 1,
+    "start_time": "2026-08-25T11:00:00",
+    "problem_category": "Skin",
+    "symptom_text": "I have a persistent skin rash and itching."
+}
+
+### Confirm Consultation Test Appointment
+
+POST http://127.0.0.1:5000/api/appointments/confirm
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MDIxNCwianRpIjoiMGMxYmRmMjMtMDdkMS00YzQwLWJhYjktMzllMjZiOTFmNjE2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjUiLCJuYmYiOjE3ODc1OTAyMTQsImNzcmYiOiIxOGU2MmJiYi1hOWExLTRmZmEtYmYxZC03MWQ0MDhjZmIwNmYiLCJleHAiOjE3ODc2NzY2MTR9.MlrKBpTUabh3RjgBy9oYXcv6HdOdJXAMvUzz-w2kceE
+Content-Type: application/json
+
+{
+    "appointment_id": 2
+}
+
+### Doctor Login - Dr. Sharma
+
+POST http://127.0.0.1:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "dr.sharma@healthapp.com",
+    "password": "doctor123"
+}
+
+### Doctor Appointments
+
+GET http://127.0.0.1:5000/api/doctor/appointments?date=2026-08-25
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MTQ3MCwianRpIjoiMWQ0ZjE1NmYtY2UwNi00ZDBkLWJiN2EtYWQ1ZWYyNzFkY2RiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3ODc1OTE0NzAsImNzcmYiOiJkN2VlYTE2YS00MzEwLTQwMmMtYWY2YS1hYzE0ZDljM2RlMDgiLCJleHAiOjE3ODc2Nzc4NzB9.tWw9pJF4Ck1YiX5DQXMTvnNo_0aM6QVE_dqbXb-Beio
+
+### Doctor Appointment Details
+
+GET http://127.0.0.1:5000/api/doctor/appointments/2Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MTQ3MCwianRpIjoiMWQ0ZjE1NmYtY2UwNi00ZDBkLWJiN2EtYWQ1ZWYyNzFkY2RiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3ODc1OTE0NzAsImNzcmYiOiJkN2VlYTE2YS00MzEwLTQwMmMtYWY2YS1hYzE0ZDljM2RlMDgiLCJleHAiOjE3ODc2Nzc4NzB9.tWw9pJF4Ck1YiX5DQXMTvnNo_0aM6QVE_dqbXb-Beio
+
+### Doctor Complete Consultation
+
+POST http://127.0.0.1:5000/api/doctor/appointments/2/consultation
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4NzU5MTQ3MCwianRpIjoiMWQ0ZjE1NmYtY2UwNi00ZDBkLWJiN2EtYWQ1ZWYyNzFkY2RiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3ODc1OTE0NzAsImNzcmYiOiJkN2VlYTE2YS00MzEwLTQwMmMtYWY2YS1hYzE0ZDljM2RlMDgiLCJleHAiOjE3ODc2Nzc4NzB9.tWw9pJF4Ck1YiX5DQXMTvnNo_0aM6QVE_dqbXb-Beio
+Content-Type: application/json
+
+{
+    "diagnosis": "Allergic dermatitis",
+    "clinical_notes": "Patient presents with persistent rash and itching.",
+    "prescription_items": [
+        {
+            "medicine_name": "Cetirizine",
+            "dosage": "10 mg",
+            "frequency": "Once daily",
+            "duration": "5 days",
+            "instructions": "Take after dinner."
+        }
+    ]
+}
+
+### Patient Prescriptions
+
+GET http://127.0.0.1:5000/api/doctor/appointments/2

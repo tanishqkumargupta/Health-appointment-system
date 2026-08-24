@@ -19,6 +19,7 @@ def complete_consultation(doctor_user_id, appointment_id, diagnosis, clinical_no
     Saves consultation diagnosis, notes, prescription items, enqueues medication reminders,
     generates post-visit AI summary, and marks appointment COMPLETED in a single atomic transaction.
     """
+    doctor_user_id = int(doctor_user_id)
     appointment = Appointment.query.get(appointment_id)
     if not appointment:
         raise ValueError("Appointment not found.")
