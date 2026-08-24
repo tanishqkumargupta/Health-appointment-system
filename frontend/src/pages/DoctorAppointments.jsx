@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
 import { Calendar, Clock, User, FileText, CheckCircle, Plus, Trash2, AlertCircle } from 'lucide-react';
+import StatusBadge from '../components/StatusBadge';
 
 export default function DoctorAppointments() {
   const { token } = useAuth();
@@ -160,7 +161,7 @@ export default function DoctorAppointments() {
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600, fontSize: '0.85rem' }}>
                     <span>{new Date(appt.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    <span className={`status-pill status-${appt.status}`}>{appt.status}</span>
+                    <StatusBadge status={appt.status} />
                   </div>
                   <div style={{ fontSize: '0.9rem', fontWeight: 700, marginTop: '4px' }}>{appt.patient_name}</div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{appt.symptom?.problem_category}</div>
@@ -188,7 +189,7 @@ export default function DoctorAppointments() {
                       Email: {activeAppt.patient_email} | Phone: {activeAppt.patient_phone || 'N/A'}
                     </p>
                   </div>
-                  <span className={`status-pill status-${activeAppt.status}`}>{activeAppt.status}</span>
+                  <StatusBadge status={activeAppt.status} />
                 </div>
                 <hr style={{ margin: '14px 0', borderColor: 'var(--border-light)' }} />
 

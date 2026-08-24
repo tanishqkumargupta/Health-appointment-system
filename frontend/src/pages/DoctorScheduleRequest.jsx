@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
 import { Clock, Send } from 'lucide-react';
+import StatusBadge from '../components/StatusBadge';
 
 export default function DoctorScheduleRequest() {
   const { token } = useAuth();
@@ -143,7 +144,7 @@ export default function DoctorScheduleRequest() {
                   <td style={{ padding: '10px' }}>{r.requested_slot_duration} mins</td>
                   <td style={{ padding: '10px' }}>{r.reason || 'N/A'}</td>
                   <td style={{ padding: '10px' }}>
-                    <span className={`status-pill status-${r.status}`}>{r.status}</span>
+                    <StatusBadge status={r.status} />
                   </td>
                 </tr>
               ))}

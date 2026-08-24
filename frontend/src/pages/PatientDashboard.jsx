@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
 import { Calendar, Clock, Stethoscope, FileText, Star, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import StatusBadge from '../components/StatusBadge';
 
 export default function PatientDashboard() {
   const { user, token } = useAuth();
@@ -105,7 +106,7 @@ export default function PatientDashboard() {
                     <h4 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Dr. {appt.doctor_name}</h4>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{appt.specialization_name}</p>
                   </div>
-                  <span className={`status-pill status-${appt.status}`}>{appt.status}</span>
+                  <StatusBadge status={appt.status} />
                 </div>
                 <div style={{ marginTop: '14px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                   <div>📅 {new Date(appt.start_time).toLocaleDateString()} at {new Date(appt.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
@@ -137,7 +138,7 @@ export default function PatientDashboard() {
                     <h4 style={{ fontWeight: 700 }}>Dr. {appt.doctor_name}</h4>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{appt.specialization_name}</p>
                   </div>
-                  <span className={`status-pill status-${appt.status}`}>{appt.status}</span>
+                  <StatusBadge status={appt.status} />
                 </div>
                 <div style={{ marginTop: '12px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                   📅 {new Date(appt.start_time).toLocaleDateString()}
@@ -170,7 +171,7 @@ export default function PatientDashboard() {
             <div style={{ spaceY: '12px' }}>
               <p><strong>Doctor:</strong> Dr. {selectedAppt.doctor_name} ({selectedAppt.specialization_name})</p>
               <p><strong>Date & Time:</strong> {new Date(selectedAppt.start_time).toLocaleString()}</p>
-              <p><strong>Status:</strong> <span className={`status-pill status-${selectedAppt.status}`}>{selectedAppt.status}</span></p>
+              <p><strong>Status:</strong> <StatusBadge status={selectedAppt.status} /></p>
               <hr style={{ margin: '16px 0', borderColor: 'var(--border-light)' }} />
               
               {selectedAppt.symptom && (

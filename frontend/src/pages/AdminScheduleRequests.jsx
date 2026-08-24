@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
 import { CheckCircle, XCircle } from 'lucide-react';
+import StatusBadge from '../components/StatusBadge';
 
 export default function AdminScheduleRequests() {
   const { token } = useAuth();
@@ -84,7 +85,7 @@ export default function AdminScheduleRequests() {
                   <td style={{ padding: '12px' }}>{r.requested_slot_duration} mins</td>
                   <td style={{ padding: '12px' }}>{r.reason || 'N/A'}</td>
                   <td style={{ padding: '12px' }}>
-                    <span className={`status-pill status-${r.status}`}>{r.status}</span>
+                    <StatusBadge status={r.status} />
                   </td>
                   <td style={{ padding: '12px', textAlign: 'right' }}>
                     {r.status === 'PENDING' ? (

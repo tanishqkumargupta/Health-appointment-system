@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
 import { CalendarOff, Send } from 'lucide-react';
+import StatusBadge from '../components/StatusBadge';
 
 export default function DoctorLeave() {
   const { token } = useAuth();
@@ -115,7 +116,7 @@ export default function DoctorLeave() {
                   <td style={{ padding: '10px' }}>{r.reason || 'N/A'}</td>
                   <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{new Date(r.created_at).toLocaleDateString()}</td>
                   <td style={{ padding: '10px' }}>
-                    <span className={`status-pill status-${r.status}`}>{r.status}</span>
+                    <StatusBadge status={r.status} />
                   </td>
                 </tr>
               ))}

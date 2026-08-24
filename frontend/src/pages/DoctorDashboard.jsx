@@ -1,23 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
-import { Calendar, Clock, User, AlertCircle, FileText, CheckCircle, Bell } from 'lucide-react';
+import { Calendar, Clock, User, AlertCircle, FileText, CheckCircle, Bell, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
+import { ErrorMessage } from '../components/ErrorMessage';
+
+const NEW_BOOKING_POLL_MS = 30000;
 
 export default function DoctorDashboard() {
   const { token, user } = useAuth();
   const [summaryData, setSummaryData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [newBookingAlert, setNewBookingAlert] = useState(null);
+  const knownCountRef = useRef(null);
 
   useEffect(() => {
     fetchPreShiftSummary();
+  }, [token]);
+
+  // Spec section 29: notify the doctor if a new appointment is booked
+  // during their active shift. This polls the same summary endpoint
+  // rather than faking a real-time connection; if the backend later
+  // exposes WebSocket/SSE, only this effect needs to change.
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+
+    const poll = async () => {
+      try {
+        const res = await apiRequest('/doctor/pre-shift-summary', 'GET', null, token);
+        if (cancelled) return;
+        if (knownCountRef.current !== null && res.total_appointments > knownCountRef.current) {
+          const newest = res.shift_summary?.[res.shift_summary.length - 1];
+          setNewBookingAlert(newest || { patient_name: 'A patient', start_time: '', problem_category: '' });
+        }
+        knownCountRef.current = res.total_appointments;
+        setSummaryData(res);
+      } catch {
+        // stay silent on transient poll failures
+      }
+    };
+
+    const interval = setInterval(poll, NEW_BOOKING_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, [token]);
 
   const fetchPreShiftSummary = async () => {
     try {
       const res = await apiRequest('/doctor/pre-shift-summary', 'GET', null, token);
       setSummaryData(res);
+      knownCountRef.current = res.total_appointments;
     } catch (err) {
       setError(err.message);
     } finally {
@@ -25,7 +62,7 @@ export default function DoctorDashboard() {
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading doctor dashboard...</div>;
+  if (loading) return <Loading label="Loading doctor dashboard..." />;
 
   return (
     <div>
@@ -34,7 +71,39 @@ export default function DoctorDashboard() {
         <p>Your shift overview and pre-visit AI patient summaries for today.</p>
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {newBookingAlert && (
+        <div
+          className="card"
+          style={{ borderLeft: '4px solid var(--primary-600)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Bell size={20} color="var(--primary-600)" />
+            <div>
+              <strong>New Appointment</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                {newBookingAlert.patient_name}
+                {newBookingAlert.start_time ? ` — ${newBookingAlert.start_time}` : ''}
+                {newBookingAlert.problem_category ? ` — ${newBookingAlert.problem_category}` : ''}
+              </p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <Link to="/doctor/appointments" className="btn btn-primary" style={{ padding: '8px 14px', fontSize: '0.85rem' }}>
+              View Appointment
+            </Link>
+            <button
+              type="button"
+              onClick={() => setNewBookingAlert(null)}
+              aria-label="Dismiss"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      <ErrorMessage text={error} />
 
       {/* Pre-Shift Doctor Summary (Rule 22) */}
       <div className="card">
