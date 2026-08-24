@@ -94,7 +94,7 @@ def hold_appointment_slot(patient_id, doctor_id, start_time_iso, problem_categor
 def confirm_appointment_booking(appointment_id, patient_id):
     """
     Confirms a HELD appointment.
-    Generates Pre-Visit AI summary, triggers notification & email, syncs Calendar.
+    Generates Pre-Visit AI summary, triggers instant email notification to patient and doctor, syncs Calendar.
     """
     appointment = Appointment.query.filter_by(id=appointment_id, patient_id=patient_id).first()
     if not appointment:
@@ -131,17 +131,28 @@ def confirm_appointment_booking(appointment_id, patient_id):
         )
         db.session.add(pre_summary)
 
-    # Queue Patient Notification
     doc_name = appointment.doctor.user.name if appointment.doctor and appointment.doctor.user else "Doctor"
+    spec_name = appointment.doctor.specialization.name if appointment.doctor and appointment.doctor.specialization else "General"
     time_str = appointment.start_time.strftime("%b %d, %Y at %I:%M %p")
+
+    # Queue & Instantly Send Patient Booking Confirmation Email (Rule 34)
     create_notification(
         user_id=patient_id,
         notif_type='APPOINTMENT_CONFIRMATION',
-        title="Appointment Confirmed",
-        message=f"Your appointment with Dr. {doc_name} for {time_str} is confirmed."
+        title="Appointment Booking Confirmed - MediCare Health",
+        message=(
+            f"Dear {appointment.patient.name},\n\n"
+            f"Your healthcare appointment has been successfully booked and confirmed.\n\n"
+            f"Appointment Details:\n"
+            f"- Doctor: Dr. {doc_name} ({spec_name})\n"
+            f"- Date & Time: {time_str}\n"
+            f"- Problem Area: {appointment.symptom.problem_category if appointment.symptom else 'General'}\n"
+            f"- Symptoms: {appointment.symptom.symptom_text if appointment.symptom else 'N/A'}\n\n"
+            f"Thank you for choosing MediCare Health."
+        )
     )
 
-    # Rule 23: Real-Time Active Shift Notification for Doctor
+    # Rule 23: Doctor Notification
     if appointment.doctor and appointment.doctor.working_hours:
         wh = appointment.doctor.working_hours
         shift_start, shift_end = get_shift_datetimes(now.date(), wh.start_time, wh.end_time)

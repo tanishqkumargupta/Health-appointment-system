@@ -61,7 +61,7 @@ def create_app(config_class=Config):
     return app
 
 def seed_database():
-    """Seeds default specializations, categories, superadmin, and initial doctors."""
+    """Seeds default specializations, categories, superadmin, initial doctors, and demo patient."""
 
     # 1. Deterministic Specialization & Category Mappings (Section 7)
     mappings = [
@@ -160,6 +160,18 @@ def seed_database():
                 slot_duration=30
             )
             db.session.add(wh2)
+
+    # 4. Default Demo Patient Account
+    patient = User.query.filter_by(email="patient@example.com").first()
+    if not patient:
+        patient = User(
+            name="Demo Patient",
+            email="patient@example.com",
+            phone="9876543212",
+            role="PATIENT"
+        )
+        patient.set_password("patient123", rounds=4)
+        db.session.add(patient)
 
     db.session.commit()
 
