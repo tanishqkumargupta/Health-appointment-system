@@ -75,7 +75,7 @@ Health appointment system/
 
 ---
 
-## 💻 Local Development Setup
+## Local Development Setup
 
 ### 1. Backend Setup
 ```bash
@@ -107,7 +107,7 @@ Frontend runs on `http://localhost:5173`.
 
 ---
 
-## ☁️ Deployment Instructions
+##  Deployment Instructions
 
 ### Deploy Backend to Render
 1. Push backend code to GitHub repository.
