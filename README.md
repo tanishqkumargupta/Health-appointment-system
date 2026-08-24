@@ -1,18 +1,27 @@
 # MediCare Health - Healthcare Appointment Management Platform
 
-A dynamic, production-ready healthcare appointment management platform supporting Patients, Doctors, and System Administrators. Built with Flask, SQLAlchemy, JWT Authentication, React, Vite, and OpenAI LLM integration.
+A full-stack healthcare appointment management platform supporting **Patients, Doctors, and System Administrators**. Built with Flask, SQLAlchemy, JWT Authentication, React, Vite, PostgreSQL/SQLite, and integrated AI and calendar services.
 
-# WEBSITE DEPLOYED URL -- https://health-appointment-system-kappa.vercel.app/login
+# WEBSITE DEPLOYED URL
 
+https://health-appointment-system-t93i.onrender.com
 
-# SYSTEM DESIGN DOCUMENT -- https://drive.google.com/file/d/1F6b_ju6bZRcMrImfT_s94RhQoROvq1rw/view?usp=sharing
+# BACKEND API
 
+https://health-appointment-backend-a204.onrender.com
 
+# SYSTEM DESIGN DOCUMENT
 
-##  Key Features
+https://drive.google.com/file/d/1F6b_ju6bZRcMrImfT_s94RhQoROvq1rw/view?usp=sharing
+
+---
+
+## Key Features
 
 ### 1. Patient Portal
-- **Public Signup & Auth**: Secure registration & login (`role = PATIENT`).
+
+- **Public Signup & Authentication**: Secure patient registration and login with role-based access.
+- **Patient Profile**: Manage personal information and view appointment-related details.
 - **Deterministic Category Mapping**:
   - Skin → Dermatology
   - Heart / Chest → Cardiology
@@ -22,110 +31,124 @@ A dynamic, production-ready healthcare appointment management platform supportin
   - Ear / Nose / Throat → ENT
   - Stomach / Digestion → Gastroenterology
   - General / Other → General Medicine
-- **Dynamic Slot Engine & Hold**: 5-minute temporary slot hold (`hold_expires_at`) before booking confirmation.
-- **Double-Booking Protection**: Prevents doctor conflicts and overlapping patient appointments across different doctors.
-- **Clean Dashboard**: Prominent NEXT / UPCOMING appointment display, past appointments, prescription history, and 1-5 star feedback.
+- **Doctor Selection**: Find doctors according to the selected healthcare category and specialization.
+- **Dynamic Slot Engine**: Displays appointment slots based on doctor working hours and slot duration.
+- **5-Minute Slot Hold**: Temporarily holds a selected slot using `hold_expires_at` before final confirmation.
+- **Double-Booking Protection**: Prevents conflicting doctor appointments and overlapping patient appointments.
+- **Appointment Management**: View upcoming and previous appointments and their status.
+- **Pre-Visit Summary**: Displays AI-generated chief complaint, urgency, and suggested questions when available.
+- **Prescription History**: Allows patients to view prescriptions associated with completed consultations.
+- **Feedback**: Supports appointment feedback and 1–5 star ratings.
 
 ### 2. Doctor Portal
-- **Date & Slot Consultation Panel**: View patient information, symptoms, and pre-visit AI triage summaries (Urgency: Low/Medium/High, chief complaint, 3 suggested doctor questions).
-- **Authoritative Prescriptions**: Diagnosis entry, clinical notes, multi-medicine prescription constructor (Food instructions: Before/With/After/Without food; Frequencies: Morning 9 AM, Afternoon 2 PM, Evening 6 PM, Night 9 PM).
-- **Atomic Consultation Completion**: Single DB transaction for diagnosis, clinical notes, prescription, and automatic medication reminder generation.
-- **Leave & Schedule Requests**: Request leave or shift/duration changes with pending status tracking.
-- **Pre-Shift Daily Summary**: Pre-shift aggregated appointment list and real-time active shift booking alerts.
+
+- **Doctor Authentication**: Secure login with doctor-specific authorization.
+- **Appointment Dashboard**: View assigned appointments according to date and schedule.
+- **Patient Information**: Access patient details, symptoms, and appointment information.
+- **AI Pre-Visit Information**: View available urgency level, chief complaint, and suggested questions.
+- **Consultation Management**: Record diagnosis and clinical notes for assigned appointments.
+- **Prescription Management**: Create prescriptions containing multiple medicines and instructions.
+- **Working Hours**: Configure doctor availability and appointment slot duration.
+- **Leave Requests**: Submit leave requests for administrator approval.
+- **Schedule Requests**: Request changes to working schedules where supported.
+- **Appointment Notifications**: Receive relevant appointment-related notifications.
 
 ### 3. Admin Portal
-- **Doctor Provisioning & Management**: Create doctors, assign specializations, set overnight shift hours (e.g. 6 PM to 2 AM next day), slot duration (15/30/45/60m), and toggle active/inactive status.
-- **Approval Center**: Review doctor leave and schedule change requests. Approved leave automatically cancels affected appointments and notifies patients.
-- **System Metrics**: Overview of total doctors, active doctors, today's appointments, and pending requests.
 
-### 4. Background Services & Resilience
-- **Background Scheduler (APScheduler)**: 24h & 2h appointment reminders, medication reminders, email retries, and slot hold cleanup.
-- **Non-Blocking External Services**: LLM failure or Google Calendar API failure falls back gracefully without breaking core booking or consultation transactions.
+- **Doctor Management**: Create and manage doctor accounts.
+- **Specialization Assignment**: Assign doctors to medical specializations.
+- **Working Hours Management**: Configure working hours and appointment slot duration.
+- **Doctor Status Management**: Activate or deactivate doctor accounts.
+- **Leave Approval Center**: Review and approve or reject doctor leave requests.
+- **Schedule Management**: Review scheduling-related requests.
+- **Appointment Management**: Monitor system appointments and doctor availability.
+- **System Overview**: View important system-level information and pending requests.
+
+### 4. Appointment & Scheduling System
+
+- **Dynamic Slot Generation**: Slots are generated from configured doctor working hours.
+- **Temporary Slot Hold**: A selected slot is held for 5 minutes before confirmation.
+- **Slot Expiration**: Expired holds become available again.
+- **Conflict Detection**: Prevents overlapping bookings.
+- **Doctor Leave Conflict Handling**: Prevents appointments during approved doctor leave.
+- **Past Slot Protection**: Prevents booking appointment slots that have already passed.
+- **Appointment Confirmation**: Converts a valid held appointment into a confirmed appointment.
+- **Appointment Cancellation**: Supports cancellation through the appropriate role workflow.
+
+### 5. Consultation & Prescription System
+
+- **Assigned Appointment Validation**: Doctors can only complete consultations for appointments assigned to them.
+- **Consultation Records**: Store diagnosis and clinical notes.
+- **Prescription Creation**: Associate prescriptions with consultations.
+- **Prescription Items**: Support multiple medicines within a prescription.
+- **Consultation Completion Protection**: Prevents the same consultation from being completed multiple times.
+
+### 6. Background Services & Integrations
+
+- **APScheduler**: Handles scheduled background operations.
+- **Appointment Reminders**: Supports scheduled appointment reminder processing.
+- **Medication Reminders**: Supports scheduled medication reminder processing.
+- **Slot Hold Cleanup**: Expired appointment holds can be cleaned automatically.
+- **AI Integration**: Supports generation of pre-visit summaries.
+- **Calendar Integration**: Supports synchronization of appointment information with the configured calendar service.
+- **Graceful External-Service Handling**: External AI or calendar failures should not prevent the core appointment workflow from operating.
 
 ---
 
-##  Technology Stack
+## Technology Stack
 
-- **Frontend**: React, Vite, JavaScript, React Router, Custom CSS Design System
-- **Backend**: Python 3.11, Flask, REST API, SQLAlchemy ORM, Flask-JWT-Extended, bcrypt
+- **Frontend**: React, Vite, JavaScript, React Router, CSS
+- **Backend**: Python 3.11, Flask, REST API, SQLAlchemy ORM
+- **Authentication**: Flask-JWT-Extended, bcrypt
 - **Database**: PostgreSQL (Production) / SQLite (Local Development)
-- **Deployment**: Vercel (Frontend), Render (Backend)
+- **API Security**: JWT Authentication, Role-Based Authorization, CORS
+- **Background Processing**: APScheduler
+- **AI Integration**: OpenAI API
+- **Calendar Integration**: Google Calendar API
+- **Deployment**: Render
+- **Production Server**: Gunicorn
 
 ---
 
-## Project Structure
+## System Design
 
-```
-Health appointment system/
-├── backend/
-│   ├── app.py                 # Flask App Factory & Database Seeding
-│   ├── config.py              # Environment Configuration
-│   ├── extensions.py          # SQLAlchemy, JWT, CORS
-│   ├── requirements.txt       # Backend Dependencies
-│   ├── models/                # Relational Models (User, Doctor, Appointment, Consultation, etc.)
-│   ├── routes/                # REST API Endpoints (auth, patient, doctor, admin, appointment)
-│   ├── services/              # Business Logic & Core Algorithms (slot_service, booking_service, etc.)
-│   ├── tasks/                 # APScheduler Background Workers
-│   └── tests/                 # Pytest Test Suite
-├── frontend/
-│   ├── package.json           # Frontend Dependencies
-│   ├── vite.config.js         # Vite Configuration
-│   └── src/
-│       ├── components/        # UI Components (Header)
-│       ├── layouts/           # Role Layouts (PatientLayout, DoctorLayout, AdminLayout)
-│       ├── pages/             # Page Views (Dashboard, Book, Consultations, Admin, Auth)
-│       ├── services/          # Fetch API Service
-│       └── context/           # AuthContext Provider
-├── README.md
-└── .env.example
-```
+The application follows a layered full-stack architecture:
 
----
-
-## Local Development Setup
-
-### 1. Backend Setup
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
-Backend runs on `http://localhost:5000`.
-
-### 2. Default Seed Credentials
-- **Admin**: `admin@healthapp.com` / `admin123`
-- **Doctor (Dermatology)**: `dr.sharma@healthapp.com` / `doctor123`
-- **Doctor (Cardiology Overnight)**: `dr.patel@healthapp.com` / `doctor123`
-
-### 3. Run Backend Tests
-```bash
-.venv\Scripts\pytest backend/tests
-```
-
-### 4. Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Frontend runs on `http://localhost:5173`.
-
----
-
-##  Deployment Instructions
-
-### Deploy Backend to Render
-1. Push backend code to GitHub repository.
-2. Create a new Web Service on Render.
-3. Set Build Command: `pip install -r backend/requirements.txt`
-4. Set Start Command: `gunicorn backend.app:app`
-5. Configure Environment Variables: `DATABASE_URL` (PostgreSQL), `JWT_SECRET`, `FRONTEND_URL`, `OPENAI_API_KEY`.
-
-### Deploy Frontend to Vercel
-1. Connect GitHub repository to Vercel.
-2. Set Root Directory to `frontend`.
-3. Set Build Command: `npm run build`
-4. Set Output Directory: `dist`
-5. Configure Environment Variable: `VITE_API_URL=https://your-backend.onrender.com/api`.
+```text
+                         ┌─────────────────────┐
+                         │       PATIENT       │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │   React + Vite UI   │
+                         │      Frontend       │
+                         └──────────┬──────────┘
+                                    │
+                              REST API / JWT
+                                    │
+                         ┌──────────▼──────────┐
+                         │   Flask Backend     │
+                         │    Application      │
+                         └──────────┬──────────┘
+                                    │
+              ┌─────────────────────┼─────────────────────┐
+              │                     │                     │
+       ┌──────▼──────┐      ┌──────▼──────┐      ┌──────▼──────┐
+       │ Authentication│     │ Appointment │      │ Role-Based  │
+       │    Routes     │     │   Routes    │      │   Routes    │
+       └──────────────┘      └──────┬──────┘      └─────────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │     Services        │
+                         │ Booking / Slots /   │
+                         │ Notifications / AI  │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │    SQLAlchemy ORM   │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │      Database       │
+                         │ PostgreSQL / SQLite │
+                         └─────────────────────┘
